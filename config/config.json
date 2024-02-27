@@ -1,0 +1,25 @@
+{
+    "mount_dir": [
+        "/home/qrpucp/Projects",
+        "/home/qrpucp/Softwares"
+    ],
+    "memory_limit": 0,
+    "auto_config_user": true,
+    "project": [
+        {
+            "HexapodSoftware": [
+                "ros-noetic-pinocchio",
+                "ros-noetic-serial",
+                "ros-noetic-grid-map",
+                "ros-noetic-grid-map-sdf",
+                "ros-noetic-vrpn",
+                "ros-noetic-joy"
+            ]
+        },
+        {
+            "pangu": [
+                "cgdb"
+            ]
+        }
+    ]
+}

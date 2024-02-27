@@ -1,0 +1,80 @@
+FROM osrf/ros:noetic-desktop-full
+
+LABEL maintainer="Haoyu Wang (qrpucp@qq.com)"
+
+ENV DEBIAN_FRONTEND noninteractive
+# ENV USER=root
+# ENV SUDO_USER=root
+
+# use bash instead of sh to use source
+SHELL ["/bin/bash", "-c"]
+
+# RUN apt-get update && apt-get upgrade -y && \ 
+# apt-get install git apt-utils python3-pip -y && \
+# rosdep update
+RUN apt-get update && apt-get upgrade -y && \ 
+    apt-get install git apt-utils python3-pip -y
+
+# install ros packages
+RUN apt-get install ros-noetic-plotjuggler ros-noetic-plotjuggler-ros -y
+
+# install vim
+RUN apt-get install vim -y
+
+# install htop
+RUN apt-get install htop -y
+
+# install tmux and oh-my-tmux
+WORKDIR /root
+RUN apt-get install tmux -y && \
+    git clone https://github.com/gpakosz/.tmux.git && \
+    ln -s -f .tmux/.tmux.conf && \
+    cp .tmux/.tmux.conf.local .
+
+# install zsh, oh-my-zsh and zsh extensions
+WORKDIR /root
+RUN apt-get install zsh curl -y && \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+WORKDIR /root/.oh-my-zsh/custom/plugins
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions.git && \
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git && \
+    sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' /root/.zshrc
+
+# test
+WORKDIR /root/scripts
+COPY build.py /root/scripts/build.py
+COPY config.json /root/scripts/config.json
+RUN python3 /root/scripts/build.py
+
+RUN echo "source /opt/ros/noetic/setup.zsh" >> /root/.zshrc
+
+# # install vscode (code-server)
+# RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+# # install vscode extensions
+# RUN code-server --install-extension ms-vscode.cpptools \
+#     --install-extension llvm-vs-code-extensions.vscode-clangd \
+#     --install-extension ms-azuretools.vscode-docker \
+#     --install-extension ms-vscode-remote.remote-containers \
+#     --install-extension ms-iot.vscode-ros \
+#     --install-extension twxs.cmake
+
+# install clang?
+
+# test
+# RUN apt-get install x11-apps -y
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+# RUN useradd -m qrpucp
+# USER qrpucp
+
+# RUN echo "%rem ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
+# echo "rem:x:123:qrpucp" >> /etc/group && \ 
+# echo "qrpucp:x:1000:" >> /etc/group
+
+WORKDIR /
+CMD [ "zsh" ]

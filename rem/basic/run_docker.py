@@ -58,8 +58,9 @@ if __name__ == '__main__':
         "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
         # apollo x11
         "-e", f"DISPLAY={display}",
+        "-e", f"CONTAINER=1",
         # "-e", f"DOCKER_USER={user}",
-        # "-e", f"USER={user}",
+        "-e", f"USER={user}",
         # "-e", f"DOCKER_USER_ID={uid}",
         # "-e", f"DOCKER_GRP={group}",
         # "-e", f"DOCKER_GRP_ID={gid}",

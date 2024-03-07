@@ -6,9 +6,7 @@ import subprocess
 with open("./config.json", "r") as file:
     config = json.load(file)
 
-install_commands = [
-    "apt-get", "install", "-y"
-]
+install_commands = ["apt-get", "install", "-y"]
 
 project_num = len(config["project"])
 project_name = []

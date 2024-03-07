@@ -30,7 +30,7 @@ class DockerWrapper:
     def removeContainer(self) -> bool:
         try:
             container = self.client.containers.get(self.container_name)
-            if container.status == 'running':
+            if container.status == "running":
                 self.stopContainer()
             logger.info("remove container...")
             container.remove()

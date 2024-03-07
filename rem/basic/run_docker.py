@@ -1,4 +1,5 @@
 from rem.utils.docker_wrapper import DockerWrapper
+
 # from rem.utils.sudo_checker import SudoChecker
 from rem.utils.user_handler import UserHandler
 from loguru import logger
@@ -18,21 +19,24 @@ def getConfig() -> None:
 
 def initLogger() -> None:
     logger.remove()
-    logger.add(sys.stdout, colorize=True,
-               format="<level>{level}:</level> <level>{message}</level>")
+    logger.add(
+        sys.stdout,
+        colorize=True,
+        format="<level>{level}:</level> <level>{message}</level>",
+    )
 
 
 def getEnv() -> None:
     global display, local_host, user, uid, group, gid
-    display = os.getenv('DISPLAY', ':1')
+    display = os.getenv("DISPLAY", ":1")
     local_host = os.uname()[1]
-    user = os.getenv('USER')
-    uid = subprocess.getoutput('id -u')
-    group = subprocess.getoutput('id -g -n')
-    gid = subprocess.getoutput('id -g')
+    user = os.getenv("USER")
+    uid = subprocess.getoutput("id -u")
+    group = subprocess.getoutput("id -g -n")
+    gid = subprocess.getoutput("id -g")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     initLogger()
     getConfig()
@@ -49,6 +53,7 @@ if __name__ == '__main__':
     logger.info("create and start container...")
 
     # Start docker container
+    # fmt: off
     docker_run_command = [
         "docker", "run", "-it", "-d",
         "--privileged=true",
@@ -72,9 +77,11 @@ if __name__ == '__main__':
         # "--ulimit", "nofile=1024:524288"
         "--ulimit", "nofile=524288:524288"
     ]
+    # fmt: on
 
     user_handler = UserHandler(config_path, True)
     user_handler.run()
+    # fmt: off
     user_config_command = [
         "-u", f"{uid}:{gid}",
         "-v", f"{config_path}/host/group:/etc/group:ro",
@@ -83,6 +90,7 @@ if __name__ == '__main__':
         "-v", f"{config_path}/host/sudoers:/etc/sudoers:ro",
         "-v", f"/home/{user}:/home/{user}",
     ]
+    # fmt: on
     docker_run_command.extend(user_config_command)
 
     # if config["auto_config_user"]:
@@ -110,15 +118,16 @@ if __name__ == '__main__':
     #         logger.warning(
     #             "Only Ubuntu systems support automatic configuration of local users. For other systems wishing to use local users, please recompile the Docker image.")
 
-    mount_dir_num = len(config['mount_dir'])
+    mount_dir_num = len(config["mount_dir"])
     for i in range(mount_dir_num):
         docker_run_command.append("-v")
         docker_run_command.append(
-            config['mount_dir'][i] + ":/root/" + config['mount_dir'][i].split("/")[-1])
+            config["mount_dir"][i] + ":/root/" + config["mount_dir"][i].split("/")[-1]
+        )
 
-    if config['memory_limit'] != 0:
+    if config["memory_limit"] != 0:
         docker_run_command.append("-m")
-        docker_run_command.append(str(config['memory_limit'])+"g")
+        docker_run_command.append(str(config["memory_limit"]) + "g")
 
     docker_run_command.append(image_name)
 

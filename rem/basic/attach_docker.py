@@ -3,8 +3,9 @@ import sys
 from loguru import logger
 
 logger.remove()
-logger.add(sys.stdout, colorize=True,
-           format="<level>{level}:</level> <level>{message}</level>")
+logger.add(
+    sys.stdout, colorize=True, format="<level>{level}:</level> <level>{message}</level>"
+)
 
 logger.info("attach container...")
 

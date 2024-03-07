@@ -35,9 +35,9 @@ class UserHandler:
         subprocess.run(
             f"cp {self.config_path}/noetic/group {self.config_path}/host/group", shell=True)
         subprocess.run(
-            f"echo 'rem:x:123:qrpucp' >> {self.config_path}/host/group", shell=True)
+            f"echo 'rem:x:123:{user}' >> {self.config_path}/host/group", shell=True)
         subprocess.run(
-            f"echo 'qrpucp:x:1000:' >> {self.config_path}/host/group", shell=True)
+            f"echo '{user}:x:1000:' >> {self.config_path}/host/group", shell=True)
         # sudoers
         subprocess.run(
             f"cp {self.config_path}/noetic/sudoers {self.config_path}/host/sudoers", shell=True)
@@ -46,23 +46,23 @@ class UserHandler:
         # shadow
         subprocess.run(
             f"cp {self.config_path}/noetic/shadow {self.config_path}/host/shadow", shell=True)
-        lines_with_qrpucp = []
+        lines_with_user = []
         with open(f"{self.config_path}/host/shadow.bak", 'r') as file:
             for line in file:
                 if user in line:
-                    lines_with_qrpucp.append(line.strip())
-        for line in lines_with_qrpucp:
+                    lines_with_user.append(line.strip())
+        for line in lines_with_user:
             subprocess.run(
                 f"echo '{line}' >> {self.config_path}/host/shadow", shell=True)
         # passwd
         subprocess.run(
             f"cp {self.config_path}/noetic/passwd {self.config_path}/host/passwd", shell=True)
-        lines_with_qrpucp = []
+        lines_with_user = []
         with open(f"{self.config_path}/host/passwd.bak", 'r') as file:
             for line in file:
                 if user in line:
-                    lines_with_qrpucp.append(line.strip())
-        for line in lines_with_qrpucp:
+                    lines_with_user.append(line.strip())
+        for line in lines_with_user:
             subprocess.run(
                 f"echo '{line}' >> {self.config_path}/host/passwd", shell=True)
         # chown

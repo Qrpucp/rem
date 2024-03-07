@@ -1,8 +1,5 @@
 {
-    "mount_dir": [
-        "/home/qrpucp/Projects",
-        "/home/qrpucp/Softwares"
-    ],
+    "mount_dir": [],
     "memory_limit": 0,
     "auto_config_user": true,
     "project": [

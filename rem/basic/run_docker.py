@@ -53,6 +53,9 @@ if __name__ == '__main__':
         "docker", "run", "-it", "-d",
         "--privileged=true",
         "--name", container_name,
+        # nvidia gpu
+        "--gpus", "all",
+        "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
         # apollo x11
         "-e", f"DISPLAY={display}",
         # "-e", f"DOCKER_USER={user}",

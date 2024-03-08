@@ -1,9 +1,8 @@
 import json
-import os
 import subprocess
 
 # open config file in docker
-with open("./config.json", "r") as file:
+with open("./config.json", "r", encoding="utf-8") as file:
     config = json.load(file)
 
 install_commands = ["apt-get", "install", "-y"]

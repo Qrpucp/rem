@@ -1,19 +1,20 @@
-from rem.utils.docker_wrapper import DockerWrapper
-
-# from rem.utils.sudo_checker import SudoChecker
-from rem.utils.user_handler import UserHandler
-from loguru import logger
 import os
 import sys
 import subprocess
 import json
-import distro
+
+from loguru import logger
+from rem.utils.docker_wrapper import DockerWrapper
+from rem.utils.user_handler import UserHandler
+
+config = {}
+config_path = display = local_host = user = uid = group = gid = ""
 
 
 def getConfig() -> None:
     global config_path, config
     config_path = os.path.abspath(__file__ + "/../../../config")
-    with open(config_path + "/config.json", "r") as file:
+    with open(config_path + "/config.json", "r", encoding="utf8") as file:
         config = json.load(file)
 
 
@@ -63,7 +64,7 @@ if __name__ == "__main__":
         "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
         # apollo x11
         "-e", f"DISPLAY={display}",
-        "-e", f"CONTAINER=1",
+        "-e", "CONTAINER=1",
         # "-e", f"DOCKER_USER={user}",
         "-e", f"USER={user}",
         # "-e", f"DOCKER_USER_ID={uid}",

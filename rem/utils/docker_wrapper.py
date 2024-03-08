@@ -1,3 +1,4 @@
+import sys
 from loguru import logger
 import docker
 
@@ -9,23 +10,23 @@ class DockerWrapper:
         self.container_name = container_name
         if not self.checkImage():
             logger.error("image not found")
-            exit()
+            sys.exit()
 
     def checkImage(self) -> bool:
         try:
             self.client.images.get(self.image_name)
-            return 1
-        except:
-            return 0
+            return True
+        except Exception:
+            return False
 
     def stopContainer(self) -> bool:
         try:
             container = self.client.containers.get(self.container_name)
             logger.info("stop container...")
             container.stop()
-            return 1
-        except:
-            return 0
+            return True
+        except Exception:
+            return False
 
     def removeContainer(self) -> bool:
         try:
@@ -34,9 +35,9 @@ class DockerWrapper:
                 self.stopContainer()
             logger.info("remove container...")
             container.remove()
-            return 1
-        except:
-            return 0
+            return True
+        except Exception:
+            return False
 
     def CreateContainer(self) -> None:
         pass

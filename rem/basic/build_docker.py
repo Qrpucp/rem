@@ -12,12 +12,13 @@ subprocess.run(
     check=True,
 )
 
-subprocess.run(
-    ["docker", "build", "-t", f"{image_name}", f"{root_path}/docker"],
-    check=True,
-)
-
-subprocess.run(
-    ["rm", f"{root_path}/docker/config.json"],
-    check=True,
-)
+try:
+    subprocess.run(
+        ["docker", "build", "-t", f"{image_name}", f"{root_path}/docker"],
+        check=True,
+    )
+finally:
+    subprocess.run(
+        ["rm", f"{root_path}/docker/config.json"],
+        check=True,
+    )

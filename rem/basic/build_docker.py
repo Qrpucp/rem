@@ -1,6 +1,6 @@
+import os
 import subprocess
 import sys
-import os
 
 image_name = sys.argv[1]
 

@@ -1,10 +1,10 @@
-import subprocess
 import re
+import subprocess
 import sys
-
 from pathlib import Path
-from packaging import version
+
 from loguru import logger
+from packaging import version
 
 
 class SudoChecker:

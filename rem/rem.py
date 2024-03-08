@@ -1,7 +1,7 @@
 #!/bin/python
 import argparse
-import subprocess
 import os
+import subprocess
 
 
 def main():

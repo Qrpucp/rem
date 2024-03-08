@@ -8,8 +8,8 @@ setup(
     description="",
     packages=["rem"],
     entry_points={
-        'console_scripts': [
-            'rem=rem.rem:main',
+        "console_scripts": [
+            "rem=rem.rem:main",
         ],
-    }
+    },
 )

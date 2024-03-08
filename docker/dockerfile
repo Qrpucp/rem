@@ -7,10 +7,10 @@ ENV DEBIAN_FRONTEND noninteractive
 # use bash instead of sh to use source
 SHELL ["/bin/bash", "-c"]
 
-# RUN apt-get update && apt-get upgrade -y && \ 
+# RUN apt-get update && apt-get upgrade -y && \
 # apt-get install git apt-utils python3-pip -y && \
 # rosdep update
-RUN apt-get update && apt-get upgrade -y && \ 
+RUN apt-get update && apt-get upgrade -y && \
     apt-get install git apt-utils python3-pip -y
 
 # install ros packages
@@ -57,11 +57,6 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 #     --install-extension ms-vscode-remote.remote-containers \
 #     --install-extension ms-iot.vscode-ros \
 #     --install-extension twxs.cmake
-
-# install clang?
-
-# test
-# RUN apt-get install x11-apps -y
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

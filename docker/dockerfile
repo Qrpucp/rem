@@ -7,11 +7,10 @@ ENV DEBIAN_FRONTEND noninteractive
 # use bash instead of sh to use source
 SHELL ["/bin/bash", "-c"]
 
-# RUN apt-get update && apt-get upgrade -y && \
-# apt-get install git apt-utils python3-pip -y && \
-# rosdep update
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install git apt-utils python3-pip -y
+    apt-get install git apt-utils python3-pip -y && \
+    apt-get install git python3-catkin-tools -y && \
+    rosdep update
 
 # install vim and htop
 RUN apt-get install vim htop -y

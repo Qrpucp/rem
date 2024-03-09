@@ -65,7 +65,7 @@ if __name__ == "__main__":
         "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
         # apollo x11
         "-e", f"DISPLAY={display}",
-        "-e", "CONTAINER=1",
+        "-e", "REM_CONTAINER=1",
         # "-e", f"DOCKER_USER={user}",
         "-e", f"USER={user}",
         # "-e", f"DOCKER_USER_ID={uid}",
@@ -132,7 +132,5 @@ if __name__ == "__main__":
         docker_run_command.append(str(config["memory_limit"]) + "g")
 
     docker_run_command.append(image_name)
-
-    # print(docker_run_command)
 
     subprocess.run(docker_run_command, check=True, stdout=subprocess.DEVNULL)

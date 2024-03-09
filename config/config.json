@@ -1,22 +1,40 @@
 {
     "mount_dir": [],
     "memory_limit": 0,
-    "auto_config_user": true,
     "project": [
         {
-            "HexapodSoftware": [
-                "ros-noetic-pinocchio",
-                "ros-noetic-serial",
-                "ros-noetic-grid-map",
-                "ros-noetic-grid-map-sdf",
-                "ros-noetic-vrpn",
-                "ros-noetic-joy"
-            ]
+            "HexapodSoftware": {
+                "ros_deps": [
+                    "pinocchio",
+                    "serial",
+                    "grid-map",
+                    "grid-map-sdf",
+                    "vrpn",
+                    "joy",
+                    "plotjuggler",
+                    "plotjuggler-ros"
+                ],
+                "python_deps": [
+                    "pre-commit"
+                ],
+                "apt_deps": [
+                    "clang-format"
+                ],
+                "npm_deps": [
+                    "husky",
+                    "commitizen"
+                ]
+            }
         },
         {
-            "pangu": [
-                "cgdb"
-            ]
+            "pangu": {
+                "ros_deps": [],
+                "python_deps": [],
+                "apt_deps": [
+                    "cgdb"
+                ],
+                "npm_deps": []
+            }
         }
     ]
 }

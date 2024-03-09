@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python3
 import argparse
 import os
 import subprocess
@@ -40,19 +40,22 @@ def main():
         # fmt: on
     elif args.action == "build":
         subprocess.run(
-            ["python", f"{basic_func_path}/build_docker.py", f"{args.name}"], check=True
+            ["/usr/bin/python3", f"{basic_func_path}/build_docker.py", f"{args.name}"],
+            check=True,
         )
     elif args.action == "run":
         subprocess.run(
-            ["python", f"{basic_func_path}/run_docker.py", f"{args.name}"], check=True
+            ["/usr/bin/python3", f"{basic_func_path}/run_docker.py", f"{args.name}"],
+            check=True,
         )
     elif args.action == "exec":
         subprocess.run(
-            ["python", f"{basic_func_path}/exec_docker.py", f"{args.name}"], check=True
+            ["/usr/bin/python3", f"{basic_func_path}/exec_docker.py", f"{args.name}"],
+            check=True,
         )
     elif args.action == "attach":
         subprocess.run(
-            ["python", f"{basic_func_path}/attach_docker.py", f"{args.name}"],
+            ["/usr/bin/python3", f"{basic_func_path}/attach_docker.py", f"{args.name}"],
             check=True,
         )
 

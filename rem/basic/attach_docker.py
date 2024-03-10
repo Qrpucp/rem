@@ -13,7 +13,7 @@ logger.info("attach container...")
 subprocess.run("xhost +local:root", shell=True, check=True, stdout=subprocess.DEVNULL)
 
 try:
-    subprocess.run(f"docker attach {sys.argv[1]}", shell=True, check=True)
+    subprocess.run(f"docker attach {sys.argv[1]}", shell=True)
 finally:
     subprocess.run(
         "xhost -local:root", shell=True, check=True, stdout=subprocess.DEVNULL

@@ -1,4 +1,7 @@
-FROM osrf/ros:noetic-desktop-full
+ARG base_image
+FROM ${base_image}
+ARG distro
+ARG nodejs_version
 
 LABEL maintainer="Haoyu Wang (qrpucp@qq.com)"
 
@@ -9,8 +12,14 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install git apt-utils python3-pip -y && \
-    apt-get install git python3-catkin-tools -y && \
     rosdep update
+
+# install python(3)-catkin-tools in ros1
+RUN if [ "$distro" = "noetic" ] || [ "$distro" = "melodic" ]; then \
+    apt-get install python3-catkin-tools -y; \
+    elif [ "$distro" = "kinetic" ]; then \
+    apt-get install python-catkin-tools -y; \
+    fi
 
 # install vim and htop
 RUN apt-get install vim htop -y
@@ -35,18 +44,23 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions.git && \
 # install vscode (code-server)
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
+# add https sources in sources.list
+RUN if [ "$distro" = "kinetic" ]; then \
+    apt-get install apt-transport-https ca-certificates -y; \
+    fi
+
 # install Node.js 20.x
 RUN apt-get update && apt-get install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${nodejs_version}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 RUN apt-get update && apt-get install nodejs -y
 
 # install dependencies in config.json
 WORKDIR /root/scripts
 COPY build.py /root/scripts/build.py
 COPY config.json /root/scripts/config.json
-RUN python3 /root/scripts/build.py
+RUN python3 /root/scripts/build.py ${distro}
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

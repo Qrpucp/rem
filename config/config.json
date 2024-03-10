@@ -4,6 +4,7 @@
     "project": [
         {
             "HexapodSoftware": {
+                "distro": "noetic",
                 "ros_deps": [
                     "pinocchio",
                     "serial",
@@ -28,6 +29,7 @@
         },
         {
             "pangu": {
+                "distro": "humble",
                 "ros_deps": [],
                 "python_deps": [],
                 "apt_deps": [

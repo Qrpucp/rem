@@ -1,5 +1,8 @@
 import json
 import subprocess
+import sys
+
+distro_name = sys.argv[1]
 
 # open config file in docker
 with open("./config.json", "r", encoding="utf-8") as file:
@@ -22,16 +25,25 @@ for i in range(project_num):
     project_ros_deps.append(config["project"][i][project_name[i]]["ros_deps"])
     project_python_deps.append(config["project"][i][project_name[i]]["python_deps"])
     project_npm_deps.append(config["project"][i][project_name[i]]["npm_deps"])
+
+    if config["project"][i][project_name[i]]["distro"] != distro_name:
+        continue
+
     for j in range(len(project_apt_deps[i])):
         apt_install_commands.append(project_apt_deps[i][j])
     for j in range(len(project_ros_deps[i])):
-        # apt_install_commands.append("ros-${ROS_DISTRO}-" + project_ros_deps[i][j])
-        apt_install_commands.append("ros-noetic-" + project_ros_deps[i][j])
+        # to be compatible with python2 in kinetic.
+        apt_install_commands.append(
+            "ros-{}-".format(distro_name) + project_ros_deps[i][j]
+        )
     for j in range(len(project_python_deps[i])):
         python_install_commands.append(project_python_deps[i][j])
     for j in range(len(project_npm_deps[i])):
         npm_install_commands.append(project_npm_deps[i][j])
 
-subprocess.run(apt_install_commands, check=True)
-subprocess.run(python_install_commands, check=True)
-subprocess.run(npm_install_commands, check=True)
+if len(apt_install_commands) > 3:
+    subprocess.run(apt_install_commands, check=True)
+if len(python_install_commands) > 2:
+    subprocess.run(python_install_commands, check=True)
+if len(npm_install_commands) > 3:
+    subprocess.run(npm_install_commands, check=True)

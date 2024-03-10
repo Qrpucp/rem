@@ -44,8 +44,7 @@ if __name__ == "__main__":
     getConfig()
     getEnv()
 
-    image_name = sys.argv[1]
-    container_name = image_name
+    distro_name = image_name = container_name = sys.argv[1]
 
     docker_wrapper = DockerWrapper(image_name, container_name)
 

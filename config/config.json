@@ -24,7 +24,8 @@
                 "npm_deps": [
                     "husky",
                     "commitizen"
-                ]
+                ],
+                "custom_cmds": []
             }
         },
         {
@@ -35,7 +36,8 @@
                 "apt_deps": [
                     "cgdb"
                 ],
-                "npm_deps": []
+                "npm_deps": [],
+                "custom_cmds": []
             }
         }
     ]

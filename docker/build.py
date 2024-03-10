@@ -11,6 +11,7 @@ with open("./config.json", "r", encoding="utf-8") as file:
 python_install_commands = ["pip", "install"]
 apt_install_commands = ["apt-get", "install", "-y"]
 npm_install_commands = ["npm", "install", "-g"]
+custom_commands = []
 
 project_num = len(config["project"])
 project_name = []
@@ -25,6 +26,7 @@ for i in range(project_num):
     project_ros_deps.append(config["project"][i][project_name[i]]["ros_deps"])
     project_python_deps.append(config["project"][i][project_name[i]]["python_deps"])
     project_npm_deps.append(config["project"][i][project_name[i]]["npm_deps"])
+    custom_commands.append(config["project"][i][project_name[i]]["custom_cmds"])
 
     if config["project"][i][project_name[i]]["distro"] != distro_name:
         continue
@@ -40,6 +42,10 @@ for i in range(project_num):
         python_install_commands.append(project_python_deps[i][j])
     for j in range(len(project_npm_deps[i])):
         npm_install_commands.append(project_npm_deps[i][j])
+    for j in range(len(custom_commands[i])):
+        if not custom_commands[i][j]:
+            continue
+        subprocess.run(custom_commands[i][j], shell=True, check=True)
 
 if len(apt_install_commands) > 3:
     subprocess.run(apt_install_commands, check=True)

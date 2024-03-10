@@ -52,7 +52,7 @@ class UserHandler:
 
         # group
         subprocess.run(
-            f"cp {self.config_path}/noetic/group {self.config_path}/host/group",
+            f"cp {self.config_path}/ubuntu/group {self.config_path}/host/group",
             shell=True,
             check=True,
         )
@@ -68,7 +68,7 @@ class UserHandler:
         )
         # sudoers
         subprocess.run(
-            f"cp {self.config_path}/noetic/sudoers {self.config_path}/host/sudoers",
+            f"cp {self.config_path}/ubuntu/sudoers {self.config_path}/host/sudoers",
             shell=True,
             check=True,
         )
@@ -79,7 +79,7 @@ class UserHandler:
         )
         # shadow
         subprocess.run(
-            f"cp {self.config_path}/noetic/shadow {self.config_path}/host/shadow",
+            f"cp {self.config_path}/ubuntu/shadow {self.config_path}/host/shadow",
             shell=True,
             check=True,
         )
@@ -96,7 +96,7 @@ class UserHandler:
             )
         # passwd
         subprocess.run(
-            f"cp {self.config_path}/noetic/passwd {self.config_path}/host/passwd",
+            f"cp {self.config_path}/ubuntu/passwd {self.config_path}/host/passwd",
             shell=True,
             check=True,
         )

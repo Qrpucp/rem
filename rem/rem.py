@@ -4,14 +4,32 @@ import os
 import subprocess
 import sys
 
+from loguru import logger
+
+from rem.utils.docker_wrapper import DockerWrapper
+
+
+def initLogger() -> None:
+    logger.remove()
+    logger.add(
+        sys.stdout,
+        colorize=True,
+        format="<level>{level}:</level> <level>{message}</level>",
+    )
+
 
 def main():
-    actions = ["build", "run", "exec", "attach"]
+    actions = ["build", "run", "start", "stop", "rm", "pull", "exec", "attach", "ps"]
     action_descriptions = [
         "Build docker image using the dockerfile.",
         "Create the container based on the image.",
+        "Start the container.",
+        "Stop the container.",
+        "Remove the container.",
+        "Download the pre-built image from dockerhub.",
         "Exec into the container.",
         "Attach to the container.",
+        "List containers.",
     ]
     parser = argparse.ArgumentParser(description="")
 
@@ -26,9 +44,10 @@ def main():
 
     for action, description in zip(actions, action_descriptions):
         action_parser = subparsers.add_parser(action, help=description)
-        action_parser.add_argument(
-            "distro", help="Ros distro name.", choices=ros_distro
-        )
+        if action != "ps":
+            action_parser.add_argument(
+                "distro", help="Ros distro name.", choices=ros_distro
+            )
 
     if len(sys.argv) == 1:
         parser.print_usage(sys.stderr)
@@ -37,6 +56,10 @@ def main():
     args = parser.parse_args()
 
     basic_func_path = os.path.abspath(__file__ + "/../basic")
+
+    initLogger()
+    if args.action != "ps":
+        docker_wrapper = DockerWrapper(args.distro, args.distro)
 
     if args.action == "init":
         # fmt: off
@@ -52,6 +75,14 @@ def main():
             ["python3", f"{basic_func_path}/run_docker.py", f"{args.distro}"],
             check=True,
         )
+    elif args.action == "start":
+        docker_wrapper.startContainer()
+    elif args.action == "stop":
+        docker_wrapper.stopContainer()
+    elif args.action == "rm":
+        docker_wrapper.removeContainer()
+    elif args.action == "pull":
+        pass
     elif args.action == "exec":
         subprocess.run(
             ["python3", f"{basic_func_path}/exec_docker.py", f"{args.distro}"],
@@ -62,6 +93,8 @@ def main():
             ["python3", f"{basic_func_path}/attach_docker.py", f"{args.distro}"],
             check=True,
         )
+    elif args.action == "ps":
+        subprocess.run("docker ps", shell=True, check=True)
 
 
 if __name__ == "__main__":

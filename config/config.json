@@ -1,6 +1,7 @@
 {
     "mount_dir": [],
     "memory_limit": 0,
+    "auto_remove": false,
     "project": [
         {
             "HexapodSoftware": {

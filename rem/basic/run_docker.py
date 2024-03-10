@@ -48,8 +48,13 @@ if __name__ == "__main__":
 
     docker_wrapper = DockerWrapper(image_name, container_name)
 
-    docker_wrapper.stopContainer()
-    docker_wrapper.removeContainer()
+    if config["auto_remove"]:
+        docker_wrapper.stopContainer()
+        docker_wrapper.removeContainer()
+    else:
+        if docker_wrapper.checkContainer():
+            logger.warning("Please remove the existed container first.")
+            sys.exit()
 
     logger.info("create and start container...")
 

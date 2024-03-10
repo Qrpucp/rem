@@ -21,6 +21,22 @@ class DockerWrapper:
         except Exception:
             return False
 
+    def checkContainer(self) -> bool:
+        try:
+            self.client.containers.get(self.container_name)
+            return True
+        except Exception:
+            return False
+
+    def startContainer(self) -> bool:
+        try:
+            container = self.client.containers.get(self.container_name)
+            logger.info("start container...")
+            container.start()
+            return True
+        except Exception:
+            return False
+
     def stopContainer(self) -> bool:
         try:
             container = self.client.containers.get(self.container_name)

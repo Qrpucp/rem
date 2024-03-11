@@ -83,17 +83,21 @@ if __name__ == "__main__":
         # fmt: on
         docker_run_command.extend(nvidia_gpu_command)
 
-    user_handler = UserHandler(config_path, True)
+    user_handler = UserHandler(config_path, True, distro_name)
     user_handler.run()
     # fmt: off
     user_config_command = [
         "-u", f"{uid}:{gid}",
         "-v", f"{config_path}/host/group:/etc/group:ro",
         "-v", f"{config_path}/host/passwd:/etc/passwd:ro",
-        "-v", f"{config_path}/host/shadow:/etc/shadow:ro",
         "-v", f"{config_path}/host/sudoers:/etc/sudoers:ro",
         "-v", f"/home/{user}:/home/{user}",
+        "-v",
     ]
+    if distro_name in ("melodic", "kinetic"):
+        user_config_command.append(f"{config_path}/host/shadow_sha512:/etc/shadow:ro")
+    else:
+        user_config_command.append(f"{config_path}/host/shadow_yescrypt:/etc/shadow:ro")
     # fmt: on
     docker_run_command.extend(user_config_command)
 

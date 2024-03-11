@@ -3,6 +3,7 @@ import shutil
 import sys
 
 from loguru import logger
+from passlib.hash import sha512_crypt
 
 
 def checkNvidiaGpu() -> bool:
@@ -26,3 +27,7 @@ def initLogger() -> None:
         colorize=True,
         format="<level>{level}:</level> <level>{message}</level>",
     )
+
+
+def generateSha512Passwd(passwd: str) -> str:
+    return sha512_crypt.hash(passwd)

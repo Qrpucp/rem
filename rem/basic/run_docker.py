@@ -7,6 +7,7 @@ from loguru import logger
 
 from rem.utils.docker_wrapper import DockerWrapper
 from rem.utils.user_handler import UserHandler
+from rem.utils.utils import checkNvidiaGpu, initLogger
 
 config = {}
 config_path = display = local_host = user = uid = group = gid = ""
@@ -17,15 +18,6 @@ def getConfig() -> None:
     config_path = os.path.abspath(__file__ + "/../../../config")
     with open(config_path + "/config.json", "r", encoding="utf8") as file:
         config = json.load(file)
-
-
-def initLogger() -> None:
-    logger.remove()
-    logger.add(
-        sys.stdout,
-        colorize=True,
-        format="<level>{level}:</level> <level>{message}</level>",
-    )
 
 
 def getEnv() -> None:
@@ -64,9 +56,6 @@ if __name__ == "__main__":
         "docker", "run", "-it", "-d",
         "--privileged=true",
         "--name", container_name,
-        # nvidia gpu
-        "--gpus", "all",
-        "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
         # apollo x11
         "-e", f"DISPLAY={display}",
         "-e", "REM_CONTAINER=1",
@@ -84,6 +73,15 @@ if __name__ == "__main__":
         "--ulimit", "nofile=524288:524288"
     ]
     # fmt: on
+
+    if checkNvidiaGpu():
+        # fmt: off
+        nvidia_gpu_command = [
+            "--gpus", "all",
+            "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
+        ]
+        # fmt: on
+        docker_run_command.extend(nvidia_gpu_command)
 
     user_handler = UserHandler(config_path, True)
     user_handler.run()

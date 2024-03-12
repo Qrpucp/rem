@@ -10,9 +10,9 @@ class DockerWrapper:
         self.client = docker.from_env()
         self.image_name = image_name
         self.container_name = container_name
-        if not self.checkImage():
-            logger.error("image not found")
-            sys.exit()
+        # if not self.checkImage():
+        #     logger.error("image not found")
+        #     sys.exit()
 
     def checkImage(self) -> bool:
         try:

@@ -75,7 +75,7 @@ def main():
     elif args.action == "rm":
         docker_wrapper.removeContainer()
     elif args.action == "pull":
-        pass
+        subprocess.run(f"docker pull qrpucp/rem:{args.distro}", shell=True, check=True)
     elif args.action == "exec":
         subprocess.run(
             ["python3", f"{basic_func_path}/exec_docker.py", f"{args.distro}"],

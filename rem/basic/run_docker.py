@@ -30,13 +30,28 @@ def getEnv() -> None:
     gid = subprocess.getoutput("id -g")
 
 
+def getDockerImage(distro_name: str) -> str:
+    docker_wrapper_local = DockerWrapper(f"local/rem:{distro_name}", "")
+    docker_wrapper_remote = DockerWrapper(f"qrpucp/rem:{distro_name}", "")
+    if docker_wrapper_local.checkImage():
+        return f"local/rem:{distro_name}"
+    elif docker_wrapper_remote.checkImage():
+        return f"qrpucp/rem:{distro_name}"
+    else:
+        logger.error(
+            "Docker image not found, you should first pull or build the image."
+        )
+        sys.exit()
+
+
 if __name__ == "__main__":
 
     initLogger()
     getConfig()
     getEnv()
 
-    distro_name = image_name = container_name = sys.argv[1]
+    distro_name = container_name = sys.argv[1]
+    image_name = getDockerImage(distro_name)
 
     docker_wrapper = DockerWrapper(image_name, container_name)
 

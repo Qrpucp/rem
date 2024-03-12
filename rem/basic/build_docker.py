@@ -35,7 +35,7 @@ try:
             "--build-arg",
             f"distro={distro_name}",
             "-t",
-            f"{image_name}",
+            f"local/rem:{image_name}",
             f"{root_path}/docker",
         ],
         check=True,

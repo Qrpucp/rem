@@ -27,15 +27,15 @@ rem init
 
 rem's syntax is similar to Docker's but with some encapsulation. You can view all commands by running `rem -h`.
 
-For instance, if you want to obtain a Noetic environment, you first need to pull a remote image with `rem pull noetic`, or build a local image with `rem build noetic`.
+For instance, if you want to obtain a ROS Noetic environment, you first need to pull a remote image with `rem pull noetic`, or build a local image with `rem build noetic`.
 
-Next, create a virtual environment (container) by running rem run noetic.
+Next, create and start the container by `running rem run noetic`.
 
-Finally, enter the virtual environment (container) for development by using `rem attach noetic` or `rem exec noetic`.
+Finally, enter the container for development by using `rem attach noetic` or `rem exec noetic`.
 
-You can replace "noetic" with any other supported ROS version of your choice. And by adding your project configuration in `config.json`, dependencies will be automatically installed when building the image locally.
+You can replace "noetic" with any other supported ROS version of your choice. And by adding your project configuration in [config.json](config/config.json), dependencies will be automatically installed when building the image locally.
 
-To integrate with VSCode, you need to install the DevContainer plugin and config in VSCode.
+To integrate with VSCode, you need to install the DevContainer plugin and configure in VSCode.
 
 ```json
 "terminal.integrated.defaultProfile.linux": "zsh_rem",

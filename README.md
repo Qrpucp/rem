@@ -1,27 +1,42 @@
-rem (**R**os **E**nvironment **M**anager) is a tool based on Docker, which allows you to easily manage multiple versions of ROS environments and brings you the same coding experience as on your local machine.
+# rem
 
-# feature
-- Utilizes the same user and password as the host machine, and does not require local building of Docker images.
-- Supports NVIDIA GPU acceleration for tools like Gazebo (requires the installation of `NVIDIA drivers` and `Docker NVIDIA Container Toolkit`).
-- Supports from ROS1 Kinetic to the latest ROS2 Rolling, with Zsh and Bash.
-- Since the home directory is mounted, shell configurations, Git configurations, Anaconda environments, and all other software installed in the home directory can be used normally.
-- Integrates with VSCode's Dev Container feature, allowing the use of the local development environment inside the container.
-- By building images locally, you can also easily define various dependencies for a project by modifying configurations, supporting automatic installation of dependencies for apt, ROS, Python, and npm.
+rem (**R**os **E**nvironment **M**anager) is a tool based on Docker, which allows you to easily manage multiple versions of ROS environments and **brings you the same coding experience as on your local machine.**
 
-# Usage
+## feature
+- Xorg image forwarding and GPU acceleration.
+- Same configuration and softwares between host machine and the virtual ROS environment. **No need to rebuild the image locally.**
+- Easily integrates with VSCode [DevContainer](https://code.visualstudio.com/docs/devcontainers/containers).
+- Easily configure project dependencies in the environment.
 
-rem only depends on Python and Docker and can be installed via pip.
+
+## Installation
+
+rem depends on Python and Docker. You can install rem via pip with the following command:
+
 ```shell
 pip install -r requirements.txt
 pip install -e .
+```
+
+Configure the terminal to automatically source the ROS environment, supports both bash and zsh.
+```shell
 rem init
 ```
 
-The syntax of rem is similar to Docker's, but differs in its usage: `rem <action> <ros_distro_name>` instead of `docker <action> <image/container name>`.
+## Usage
 
-For example, you can create a ROS Noetic environment with `rem build noetic`, enter this virtual environment with `rem exec/attach noetic`, and similarly use commands like `start`, `stop`, `rm`, `ps`, etc.
+rem's syntax is similar to Docker's but with some encapsulation. You can view all commands by running `rem -h`.
 
-To integrate with VSCode, you need to install the DevContainer plugin and redefine a terminal in VSCode.
+For instance, if you want to obtain a Noetic environment, you first need to pull a remote image with `rem pull noetic`, or build a local image with `rem build noetic`.
+
+Next, create a virtual environment (container) by running rem run noetic.
+
+Finally, enter the virtual environment (container) for development by using `rem attach noetic` or `rem exec noetic`.
+
+You can replace "noetic" with any other supported ROS version of your choice. And by adding your project configuration in `config.json`, dependencies will be automatically installed when building the image locally.
+
+To integrate with VSCode, you need to install the DevContainer plugin and config in VSCode.
+
 ```json
 "terminal.integrated.defaultProfile.linux": "zsh_rem",
 "terminal.integrated.profiles.linux": {
@@ -33,6 +48,7 @@ To integrate with VSCode, you need to install the DevContainer plugin and redefi
 
 ## Known limitations
 
-- Does not support AMD GPU acceleration
+- Currently does not support AMD GPU acceleration
 - Due to the difference in Ubuntu's password encryption algorithm, it is necessary to manually enter the user password on Kinetic and Melodic
 - If there is a significant discrepancy between the host machine's operating system and the ROS environment's operating system, there may be some configurations is not universally applicable.
+- Ubuntu-16.04 lacks the libglvnd package, which results in the inability to use software requiring OpenGL, such as Gazebo and Rviz, when using nvidia-docker2. For more detailed information, please refer to [ros wiki](http://wiki.ros.org/docker/Tutorials/Hardware%20Acceleration#nvidia-docker2). You can manually resolve this issue by following the [instructions](https://github.com/NVIDIA/nvidia-docker/issues/534#issuecomment-436054364).

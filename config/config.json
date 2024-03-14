@@ -26,19 +26,51 @@
                     "husky",
                     "commitizen"
                 ],
-                "custom_cmds": []
+                "custom_cmds": [],
+                "scripts": []
             }
         },
         {
             "pangu": {
-                "distro": "humble",
-                "ros_deps": [],
+                "distro": "noetic",
+                "ros_deps": [
+                    "grid-map-core",
+                    "grid-map-pcl",
+                    "vision-msgs",
+                    "jsk-recognition-msgs",
+                    "ompl",
+                    "nlopt",
+                    "rviz-visual-tools",
+                    "serial",
+                    "map-server",
+                    "grid-map-sdf",
+                    "grid-map-visualization",
+                    "jsk-visualization",
+                    "grid-map-rviz-plugin",
+                    "tf2-sensor-msgs",
+                    "octomap-ros",
+                    "trac-ik-lib"
+                ],
                 "python_deps": [],
                 "apt_deps": [
-                    "cgdb"
+                    "cgdb",
+                    "xterm",
+                    "libqt5charts5-dev",
+                    "libgoogle-glog-dev",
+                    "libnlopt-dev",
+                    "libnlopt-cxx-dev",
+                    "iproute2"
                 ],
                 "npm_deps": [],
-                "custom_cmds": []
+                "custom_cmds": [],
+                "scripts": [
+                    "pangu/install_geographic_lib.sh",
+                    "pangu/install_livox_sdk.sh",
+                    "pangu/install_osqp.sh",
+                    "pangu/install_osqp_eigen.sh",
+                    "pangu/install_mscl.sh",
+                    "pangu/install_hik_sdk.sh"
+                ]
             }
         }
     ]

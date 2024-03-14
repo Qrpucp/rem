@@ -11,7 +11,6 @@ with open("./config.json", "r", encoding="utf-8") as file:
 python_install_commands = ["pip", "install"]
 apt_install_commands = ["apt-get", "install", "-y"]
 npm_install_commands = ["npm", "install", "-g"]
-custom_commands = []
 
 project_num = len(config["project"])
 project_name = []
@@ -19,6 +18,8 @@ project_ros_deps = []
 project_python_deps = []
 project_apt_deps = []
 project_npm_deps = []
+custom_commands = []
+project_scripts = []
 
 for i in range(project_num):
     project_name.append(next(iter(config["project"][i])))
@@ -27,6 +28,7 @@ for i in range(project_num):
     project_python_deps.append(config["project"][i][project_name[i]]["python_deps"])
     project_npm_deps.append(config["project"][i][project_name[i]]["npm_deps"])
     custom_commands.append(config["project"][i][project_name[i]]["custom_cmds"])
+    project_scripts.append(config["project"][i][project_name[i]]["scripts"])
 
     if config["project"][i][project_name[i]]["distro"] != distro_name:
         continue
@@ -46,6 +48,14 @@ for i in range(project_num):
         if not custom_commands[i][j]:
             continue
         subprocess.run(custom_commands[i][j], shell=True, check=True)
+    for j in range(len(project_scripts[i])):
+        if not project_scripts[i][j]:
+            continue
+        subprocess.run(
+            "/usr/bin/bash /root/scripts/" + project_scripts[i][j],
+            shell=True,
+            check=True,
+        )
 
 if len(apt_install_commands) > 3:
     subprocess.run(apt_install_commands, check=True)

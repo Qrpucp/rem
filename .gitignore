@@ -3,6 +3,10 @@
 # custom
 .vscode
 config/host
+docker/files/*
+!docker/files/empty
+docker/scripts/*
+!docker/scripts/empty
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

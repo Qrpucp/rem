@@ -20,6 +20,8 @@ project_apt_deps = []
 project_npm_deps = []
 custom_commands = []
 project_scripts = []
+executed_scripts = []
+
 
 for i in range(project_num):
     project_name.append(next(iter(config["project"][i])))
@@ -31,6 +33,8 @@ for i in range(project_num):
     project_scripts.append(config["project"][i][project_name[i]]["scripts"])
 
     if config["project"][i][project_name[i]]["distro"] != distro_name:
+        continue
+    if not config["project"][i][project_name[i]]["install"]:
         continue
 
     for j in range(len(project_apt_deps[i])):
@@ -51,11 +55,13 @@ for i in range(project_num):
     for j in range(len(project_scripts[i])):
         if not project_scripts[i][j]:
             continue
-        subprocess.run(
-            "/usr/bin/bash /root/scripts/" + project_scripts[i][j],
-            shell=True,
-            check=True,
-        )
+        if not project_scripts[i][j] in executed_scripts:
+            subprocess.run(
+                "/usr/bin/bash /root/scripts/" + project_scripts[i][j],
+                shell=True,
+                check=True,
+            )
+            executed_scripts.append(project_scripts[i][j])
 
 if len(apt_install_commands) > 3:
     subprocess.run(apt_install_commands, check=True)

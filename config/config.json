@@ -6,6 +6,7 @@
         {
             "HexapodSoftware": {
                 "distro": "noetic",
+                "install": false,
                 "ros_deps": [
                     "pinocchio",
                     "serial",
@@ -33,6 +34,7 @@
         {
             "pangu": {
                 "distro": "noetic",
+                "install": false,
                 "ros_deps": [
                     "grid-map-core",
                     "grid-map-pcl",
@@ -64,10 +66,10 @@
                 "npm_deps": [],
                 "custom_cmds": [],
                 "scripts": [
+                    "basic/install_osqp.sh",
+                    "basic/install_osqp_eigen.sh",
                     "pangu/install_geographic_lib.sh",
                     "pangu/install_livox_sdk.sh",
-                    "pangu/install_osqp.sh",
-                    "pangu/install_osqp_eigen.sh",
                     "pangu/install_mscl.sh",
                     "pangu/install_hik_sdk.sh"
                 ]

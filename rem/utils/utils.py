@@ -12,7 +12,7 @@ def checkNvidiaGpu() -> bool:
     return True
 
 
-def getDefualtShell() -> str:
+def getDefaultShell() -> str:
     shell = os.getenv("SHELL")
     if shell is None:
         return ""

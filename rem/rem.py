@@ -1,5 +1,6 @@
 #!python3
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -11,6 +12,10 @@ from rem.utils.utils import getDefaultShell, initLogger
 
 
 def main():
+    config_path = os.path.abspath(__file__ + "/../../config")
+    with open(config_path + "/config.json", "r", encoding="utf8") as file:
+        config = json.load(file)
+
     actions = ["build", "run", "start", "stop", "rm", "pull", "exec", "attach", "ps"]
     action_descriptions = [
         "Build docker image using the dockerfile.",
@@ -73,7 +78,12 @@ def main():
     elif args.action == "stop":
         docker_wrapper.stopContainer()
     elif args.action == "rm":
-        docker_wrapper.removeContainer()
+        if args.distro in config["locked_env"]:
+            logger.error(
+                f"The {args.distro} environment is locked, you can't remove it."
+            )
+        else:
+            docker_wrapper.removeContainer()
     elif args.action == "pull":
         subprocess.run(f"docker pull qrpucp/rem:{args.distro}", shell=True, check=True)
     elif args.action == "exec":

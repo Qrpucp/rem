@@ -57,7 +57,13 @@ if __name__ == "__main__":
 
     if config["auto_remove"]:
         docker_wrapper.stopContainer()
-        docker_wrapper.removeContainer()
+        if distro_name in config["locked_env"]:
+            logger.error(
+                f"The {distro_name} environment is locked, you can't remove it."
+            )
+            sys.exit()
+        else:
+            docker_wrapper.removeContainer()
     else:
         if docker_wrapper.checkContainer():
             logger.warning("Please remove the existed container first.")

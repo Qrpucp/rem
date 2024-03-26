@@ -41,7 +41,7 @@ To integrate with VSCode, you need to install the DevContainer plugin and config
 "terminal.integrated.defaultProfile.linux": "zsh_rem",
 "terminal.integrated.profiles.linux": {
     "zsh_rem": {
-        "path": "/entrypoint.sh"
+        "path": "/exec.sh"
     }
 }
 ```

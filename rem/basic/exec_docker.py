@@ -19,7 +19,7 @@ subprocess.run("xhost +local:root", shell=True, check=True, stdout=subprocess.DE
 
 # Execute a command inside a running Docker container
 try:
-    subprocess.run(f"docker exec -it {sys.argv[1]} /entrypoint.sh", shell=True)
+    subprocess.run(f"docker exec -it {sys.argv[1]} /exec.sh", shell=True)
 finally:
     # Disable local root connections to the X server, ensuring this runs even if the previous command fails
     subprocess.run(

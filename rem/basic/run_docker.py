@@ -71,14 +71,9 @@ if __name__ == "__main__":
         "docker", "run", "-it", "-d",
         "--privileged=true",
         "--name", container_name,
-        # apollo x11
         "-e", f"DISPLAY={display}",
         "-e", "REM_CONTAINER=1",
-        # "-e", f"DOCKER_USER={user}",
         "-e", f"USER={user}",
-        # "-e", f"DOCKER_USER_ID={uid}",
-        # "-e", f"DOCKER_GRP={group}",
-        # "-e", f"DOCKER_GRP_ID={gid}",
         "-e", f"XDG_RUNTIME_DIR={os.getenv('XDG_RUNTIME_DIR')}",
         "-v", f"{os.getenv('XDG_RUNTIME_DIR')}:{os.getenv('XDG_RUNTIME_DIR')}",
         "-v", "/dev/input:/dev/input",
@@ -102,7 +97,7 @@ if __name__ == "__main__":
     user_handler.run()
     # fmt: off
     user_config_command = [
-        "-u", f"{uid}:{gid}",
+        # "-u", f"{uid}:{gid}",
         "-v", f"{config_path}/host/group:/etc/group:ro",
         "-v", f"{config_path}/host/passwd:/etc/passwd:ro",
         "-v", f"{config_path}/host/sudoers:/etc/sudoers:ro",

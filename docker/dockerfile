@@ -56,6 +56,13 @@ RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg -
 RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${nodejs_version}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 RUN apt-get update && apt-get install nodejs -y
 
+# install and config ssh
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    mkdir /var/run/sshd && \
+    sed -i 's/#Port 22/Port 1234/' /etc/ssh/sshd_config
+EXPOSE 1234
+
 # copy local files and scripts
 COPY files /root/files
 COPY scripts /root/scripts
@@ -66,8 +73,14 @@ COPY build.py /root/scripts/build.py
 COPY config.json /root/scripts/config.json
 RUN python3 /root/scripts/build.py ${distro}
 
+COPY exec.sh /exec.sh
+RUN chmod +x /exec.sh
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
+
+# start the container using root to execute some system commands
+USER root
 
 WORKDIR /
